@@ -1,0 +1,14 @@
+version: "2"
+
+services:
+  builder:
+    build:
+      context: .
+      dockerfile: Dockerfile.builder
+    volumes:
+      - "./tmp:/outside_tmp"
+
+
+  tor:
+    build: .
+
