@@ -20,7 +20,16 @@ HiddenServicePort 22 127.0.0.1:22
 HiddenServicePort 80 web:80
 
 ExitPolicy reject *:* # no exits allowed
+
+
+## Details & Version
+
+Installation from package with version:
+
 ```
+Tor 0.2.9.9 (git-1d8323c042800718) running on Linux with Libevent 2.0.21-stable, OpenSSL 1.0.2g and Zlib 1.2.8.
+```
+
 
 
 ## Links
