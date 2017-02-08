@@ -28,6 +28,7 @@ RUN mkdir /app \
  && CHECKSUM=`sha256sum openssl-${OPENSSL_VERSION}.tar.gz | awk '{print $1}'` \
  && test X"${CHECKSUM}" = X${OPENSSL_SHA} \
  && tar xzmf openssl-${OPENSSL_VERSION}.tar.gz \
+ && rm openssl-${OPENSSL_VERSION}.tar.gz \
  && cd openssl-${OPENSSL_VERSION} \
  && ./config --shared --prefix=${OPENSSL_PREFIX} \
  && make \
@@ -43,6 +44,7 @@ ENV TOR_BRANCH release-0.2.9
 # WARNING: SSL verification does not work!!! Hence GIT_SSL_NO_VERIFY=1
 #
 # http://stackoverflow.com/questions/21181231/server-certificate-verification-failed-cafile-etc-ssl-certs-ca-certificates-c
+# http://stackoverflow.com/questions/7814423/ssl-works-with-browser-wget-and-curl-but-fails-with-git
 #
 # Even regenerating ca-certs does not help:
 # $ update-ca-certificates -f
@@ -57,9 +59,11 @@ RUN cd /app \
  && cd tor \
  && sh autogen.sh \
  && ./configure --prefix=$HOME/tor-local --with-openssl-dir=${OPENSSL_PREFIX} --disable-asciidoc \
- && make
+ && make \
+ && make install \
+ && cd /app \
+ && rm -rf tor
 
 
-
-
+WORKDIR "/root"
 

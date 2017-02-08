@@ -1,0 +1,7 @@
+
+ORPort 443
+Exitpolicy reject *:*
+Nickname ididntedittheconfig
+ContactInfo human@...
+
+
