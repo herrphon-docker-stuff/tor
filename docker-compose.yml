@@ -3,6 +3,6 @@ version: "2"
 services:
   tor:
     build: .
-    image: herrphon/tor
+    image: herrphon/tor:simple
     container_name: tor
 
