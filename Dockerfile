@@ -20,10 +20,10 @@ RUN apt-get update \
 
 ENV OPENSSL_VERSION 1.0.2k
 ENV OPENSSL_SHA     6b3977c61f2aedf0f96367dcfb5c6e578cf37e7b8d913b4ecb6643c3cb88d8c0
-ENV OPENSSL_PREFIX  /app/openssl-${OPENSSL_VERSION}/local
+ENV OPENSSL_PREFIX  /data/openssl-${OPENSSL_VERSION}/local
 
-RUN mkdir /app \
- && cd /app \
+RUN mkdir /data \
+ && cd /data \
  && wget http://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz \
  && CHECKSUM=`sha256sum openssl-${OPENSSL_VERSION}.tar.gz | awk '{print $1}'` \
  && test X"${CHECKSUM}" = X${OPENSSL_SHA} \
@@ -54,16 +54,19 @@ RUN echo -n \
   | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p'
 
 
-RUN cd /app \
+RUN cd /data \
  && GIT_SSL_NO_VERIFY=1 git clone -b ${TOR_BRANCH} https://git.torproject.org/tor.git \
  && cd tor \
  && sh autogen.sh \
- && ./configure --prefix=$HOME/tor-local --with-openssl-dir=${OPENSSL_PREFIX} --disable-asciidoc \
+ && ./configure --prefix=/opt/tor-local --with-openssl-dir=${OPENSSL_PREFIX} --disable-asciidoc \
  && make \
  && make install \
- && cd /app \
- && rm -rf tor
+ && cd /data \
+ && rm -rf tor \
+ && ln -s /opt/tor-local/bin/tor /usr/local/bin
 
+RUN chmod 777 /data
+ENV HOME /data
 
-WORKDIR "/root"
+WORKDIR "/data"
 

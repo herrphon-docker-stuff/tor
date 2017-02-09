@@ -6,3 +6,16 @@ services:
     image: herrphon/tor
     container_name: tor
 
+    user: $UID
+
+    volumes:
+      - "./torrc:/data/torrc"
+      - "./hidden-service:/data/hidden-service"
+
+    command: "tor -f torrc"
+
+  web:
+    image: nginx
+    container_name: tor-nginx
+    
+
