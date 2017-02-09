@@ -9,6 +9,19 @@ docker-compose up
 ```
 
 
+Either copy torrc.sample to torrc and configure, or use the following:
+``` bash
+SocksPort 9050 # Default: Bind to localhost:9050 for local connections.
+
+# HiddenServiceDir should be chmod 700:
+HiddenServiceDir /data/hidden-service
+
+HiddenServicePort 22 127.0.0.1:22
+HiddenServicePort 80 web:80
+
+ExitPolicy reject *:* # no exits allowed
+```
+
 
 ## Links
 
